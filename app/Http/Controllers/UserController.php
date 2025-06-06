@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -12,10 +13,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = User::all();
-        return response()->json([
-            "data" => $user,
-        ], 200);
+        $user = UserResource::collection(User::all());
+        return $user->response()->setStatusCode(200);
     }
 
     /**
@@ -23,10 +22,8 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $user = User::create($request->all());
-        return response()->json([
-            "data" => $user,
-        ], 200);
+        $user = new UserResource(User::create($request->all()));
+        return  $user->response()->setStatusCode(200);
     }
 
     /**
@@ -34,10 +31,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::findOrFail($id);
-        return response()->json([
-            "data" => $user,
-        ], 200);
+        $user = new UserResource(User::findOrFail($id));
+        return  $user->response()->setStatusCode(200);
     }
 
     /**
@@ -45,11 +40,9 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
+        $user = new UserResource(User::findOrFail($id));
         $user->update($request->all());
-        return response()->json([
-            "data" => "updated successfully",
-        ], 200);
+        return  $user->response()->setStatusCode(200, "Updated Successffully");
     }
 
     /**

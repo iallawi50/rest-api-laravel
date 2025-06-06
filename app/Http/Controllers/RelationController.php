@@ -12,28 +12,60 @@ class RelationController extends Controller
     public function lessonTags($id)
     {
         $tags = Lesson::findOrFail($id)->tags;
-        
+
+        $filed = array();
+        $filtered = array();
+        foreach ($tags as $tag) {
+            $filed["title"] =  $tag->name;
+            $filtered[] = $filed;
+        }
+
+
+
         return response()->json([
-            "data" => $tags,
+            "data" => $filtered,
         ], 200);
     }
 
     public function tagLessons($id)
     {
         $lessons = Tag::findOrFail($id)->lessons;
-        
+
+
+         $filtered = array();
+        foreach ($lessons as $lesson) {
+            $filtered[] = [
+                "Title" => $lesson->title,
+                "Body" => $lesson->body
+            ];
+        }
+
+
+
         return response()->json([
-            "data" => $lessons,
+            "data" => $filtered,
         ], 200);
     }
 
     public function userLessons($id)
     {
-        $lessons = User::findOrFail($id)->lessons;
-        
+        $user = User::findOrFail($id);
+
+        $lessons = $user->lessons;
+
+        $filtered = [];
+
+        foreach ($lessons as $lesson) {
+            $filtered[] = [
+                "Title" => $lesson->title,
+                "Body" => $lesson->body
+            ];
+        };
+
+
         return response()->json([
-            "data" => $lessons,
+            "Owner" => $user->name,
+            "data" => $filtered,
         ], 200);
-        
     }
 }

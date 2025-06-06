@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\LessonResource;
 use App\Models\Lesson;
 use Illuminate\Http\Request;
 
@@ -12,10 +13,8 @@ class LessonController extends Controller
      */
     public function index()
     {
-        $lesson = Lesson::all();
-        return response()->json([
-            "data" => $lesson,
-        ], 200);
+        $lesson = LessonResource::collection(Lesson::all());
+        return $lesson->response()->setStatusCode(200);
     }
 
     /**
@@ -23,10 +22,8 @@ class LessonController extends Controller
      */
     public function store(Request $request)
     {
-        $lesson = Lesson::create($request->all());
-        return response()->json([
-            "data" => $lesson,
-        ], 200);
+        $lesson = new LessonResource(Lesson::create($request->all()));
+        return $lesson->response()->setStatusCode(200);
     }
 
     /**
@@ -34,11 +31,9 @@ class LessonController extends Controller
      */
     public function show($id)
     {
-        $lesson = Lesson::findOrFail($id);
+        $lesson = new LessonResource(Lesson::findOrFail($id));
 
-        return response()->json([
-            "data" => $lesson,
-        ], 200);
+        return $lesson->response()->setStatusCode(200);
     }
 
     /**
@@ -46,11 +41,9 @@ class LessonController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $lesson = Lesson::findOrFail($id);
+        $lesson = new LessonResource(Lesson::findOrFail($id));
         $lesson->update($request->all());
-        return response()->json([
-            "data" => "updated successfully",
-        ], 200);
+        return $lesson->response()->setStatusCode(200, "updated successfuly");
     }
 
     /**

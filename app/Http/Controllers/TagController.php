@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\TagResource;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 
@@ -12,10 +13,8 @@ class TagController extends Controller
      */
     public function index()
     {
-        $tag = Tag::all();
-        return response()->json([
-            "data" => $tag,
-        ], 200);
+        $tag = TagResource::collection(Tag::all());
+        return           $tag->response()->setStatusCode(200);
     }
 
     /**
@@ -23,10 +22,8 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        $tag = Tag::create($request->all());
-        return response()->json([
-            "data" => $tag,
-        ], 200);
+        $tag = new TagResource(Tag::create($request->all()));
+        return $tag->response()->setStatusCode(200);
     }
 
     /**
@@ -34,10 +31,8 @@ class TagController extends Controller
      */
     public function show($id)
     {
-        $tag = Tag::findOrFail($id);
-        return response()->json([
-            "data" => $tag,
-        ], 200);
+        $tag = new TagResource(Tag::findOrFail($id));
+        return $tag->response()->setStatusCode(200);
     }
 
     /**
@@ -45,11 +40,9 @@ class TagController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $tag = Tag::findOrFail($id);
+        $tag = new TagResource(Tag::findOrFail($id));
         $tag->update($request->all());
-        return response()->json([
-            "data" => "updated successfully",
-        ], 200);
+        return $tag->response()->setStatusCode(200, "updated successffuly");
     }
 
     /**
@@ -58,8 +51,6 @@ class TagController extends Controller
     public function destroy($id)
     {
         Tag::findOrFail($id)->delete();
-        return response()->json([
-            "data" => "deleted successfully",
-        ], 204);
+        return 204;
     }
 }
