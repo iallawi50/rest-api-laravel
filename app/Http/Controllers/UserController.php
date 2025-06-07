@@ -5,9 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware("auth.basic")->except("index", "store");
+    }
     /**
      * Display a listing of the resource.
      */
@@ -22,7 +28,9 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $user = new UserResource(User::create($request->all()));
+         $data = $request->all();
+         $data["password"] = Hash::make($data["password"]);
+         $user = new UserResource(User::create($data));
         return  $user->response()->setStatusCode(200);
     }
 

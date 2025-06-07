@@ -4,6 +4,7 @@ use App\Http\Controllers\LessonController;
 use App\Http\Controllers\RelationController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\OnceBaseMiddleware;
 use App\Models\Lesson;
 use App\Models\Tag;
 use App\Models\User;
@@ -38,8 +39,8 @@ Route::prefix("v1")->group(function () {
 
     // Route::redirect("oldtag", "tag");
 
-  
-  
+
+
     Route::any("olduser", function () {
         $msg = "this is not updated api";
         return Response::json($msg, 404);
@@ -56,4 +57,4 @@ Route::prefix("v1")->group(function () {
 
 });
 
-// User 
+// User
