@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LessonController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RelationController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
@@ -16,7 +17,7 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-
+Route::post('/login', [LoginController::class, "login"]);
 Route::prefix("v1")->group(function () {
     Route::apiResource("lesson", LessonController::class);
     Route::apiResource("user", UserController::class);

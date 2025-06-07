@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\OnceBasicMiddleware;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -12,7 +13,7 @@ class UserController extends Controller
 
     public function __construct()
     {
-        $this->middleware("auth.basic")->except("index", "store");
+        $this->middleware("auth:sanctum")->except("index", "store");
     }
     /**
      * Display a listing of the resource.

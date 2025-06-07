@@ -4,6 +4,7 @@ use App\Http\Middleware\OnceBasicMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Validation\UnauthorizedException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
@@ -37,9 +38,9 @@ return Application::configure(basePath: dirname(__DIR__))
             ], 404);
         });
 
-        // $exceptions->renderable(function(Throwable $e) {
-        //     return response()->json([
-        //         "data" => "something went error",
-        //     ],500);
-        // });
+        $exceptions->renderable(function(Throwable $e) {
+            return response()->json([
+                "data" => "something went error",
+            ],405);
+        });
     })->create();
