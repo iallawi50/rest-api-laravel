@@ -41,6 +41,7 @@ class LessonController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->authorize("update", Lesson::findOrFail($id));
         $lesson = new LessonResource(Lesson::findOrFail($id));
         $lesson->update($request->all());
         return $lesson->response()->setStatusCode(200, "updated successfuly");

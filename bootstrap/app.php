@@ -5,6 +5,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Validation\UnauthorizedException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
@@ -38,9 +39,15 @@ return Application::configure(basePath: dirname(__DIR__))
             ], 404);
         });
 
-        $exceptions->renderable(function(Throwable $e) {
+        $exceptions->render(function(AccessDeniedHttpException $e){
             return response()->json([
-                "data" => "something went error",
-            ],405);
+                "data" => "you dont have permissions to do that"
+            ], 403);
         });
+
+        // $exceptions->renderable(function(Throwable $e) {
+        //     return response()->json([
+        //         "data" => "something went error",
+        //     ],405);
+        // });
     })->create();
